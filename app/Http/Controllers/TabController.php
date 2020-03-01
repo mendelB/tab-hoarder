@@ -39,7 +39,30 @@ class TabController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+        	'url' => 'required|url',
+        ]);
+
+        $url = $request->query('url');
+
+        $title;
+        $dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+
+        if ($dom->loadHTMLFile($url)) {
+    			$list = $dom->getElementsByTagName("title");
+    			
+    			if ($list->length > 0) {
+        		$title = $list->item(0)->textContent;
+    			}
+				}
+
+				$tab = new Tab;
+				$tab->url = $url;
+				$tab->title = $title;
+				$tab->save();
+
+				return redirect('/tabs');
     }
 
     /**
