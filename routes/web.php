@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::resource('tabs', 'TabController');
+
+Route::get('store', 'TabController@store');
